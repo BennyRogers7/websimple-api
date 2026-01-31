@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ business.name }} | {{ business.tagline }}</title>
+    <meta name="description" content="{{ seo.metaDescription }}">
+    <meta name="keywords" content="{{ seo.keywords | join(', ') }}">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{ business.name }} | {{ business.tagline }}">
+    <meta property="og:description" content="{{ seo.metaDescription }}">
+    <meta property="og:type" content="website">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '{{ style.primaryColor | default("#2c3e50") }}',
+                        'primary-light': '{{ style.primaryLight | default("#34495e") }}',
+                        accent: '{{ style.accentColor | default("#16a085") }}',
+                        'accent-hover': '{{ style.accentHover | default("#1abc9c") }}',
+                        sand: '#f5f3ef',
+                        stone: '#e8e4df',
+                        lake: '#1a365d',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts - Clean, modern feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        .font-display {
+            font-family: 'Libre Baskerville', Georgia, serif;
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.5) 100%);
+        }
+        .project-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .project-card:hover {
+            transform: scale(1.02);
+        }
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+        .project-overlay {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .nav-scrolled {
+            background: rgba(255,255,255,0.98);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .btn-primary {
+            transition: all 0.2s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(22, 160, 133, 0.3);
+        }
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .stat-number {
+            font-variant-numeric: tabular-nums;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800 antialiased">
+
+    <!-- Navigation - Clean, minimal -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="#" class="flex items-center">
+                    {% if business.logo %}
+                    <img src="{{ business.logo }}" alt="{{ business.name }}" class="h-10">
+                    {% else %}
+                    <span class="text-xl font-semibold tracking-tight text-white" id="logo-text">{{ business.name }}</span>
+                    {% endif %}
+                </a>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-10">
+                    <a href="#work" class="text-white/90 hover:text-white transition-colors text-sm font-medium tracking-wide uppercase" id="nav-link-1">Work</a>
+                    <a href="#about" class="text-white/90 hover:text-white transition-colors text-sm font-medium tracking-wide uppercase" id="nav-link-2">About</a>
+                    <a href="#services" class="text-white/90 hover:text-white transition-colors text-sm font-medium tracking-wide uppercase" id="nav-link-3">Services</a>
+                    <a href="#contact" class="text-white/90 hover:text-white transition-colors text-sm font-medium tracking-wide uppercase" id="nav-link-4">Contact</a>
+                    <a href="tel:{{ business.phone | replace(' ', '') | replace('-', '') | replace('(', '') | replace(')', '') }}" class="bg-accent hover:bg-accent-hover text-white px-5 py-2.5 rounded text-sm font-semibold transition-colors btn-primary">
+                        {{ business.phone }}
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-white" id="mobile-btn" onclick="toggleMobileMenu()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-6 py-6 space-y-4">
+                <a href="#work" class="block text-gray-800 hover:text-accent py-2 text-sm font-medium uppercase tracking-wide">Work</a>
+                <a href="#about" class="block text-gray-800 hover:text-accent py-2 text-sm font-medium uppercase tracking-wide">About</a>
+                <a href="#services" class="block text-gray-800 hover:text-accent py-2 text-sm font-medium uppercase tracking-wide">Services</a>
+                <a href="#contact" class="block text-gray-800 hover:text-accent py-2 text-sm font-medium uppercase tracking-wide">Contact</a>
+                <a href="tel:{{ business.phone | replace(' ', '') | replace('-', '') | replace('(', '') | replace(')', '') }}" class="block bg-accent text-white text-center py-3 rounded font-semibold mt-4">
+                    {{ business.phone }}
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section - Full screen, dramatic -->
+    <section class="relative h-screen flex items-center">
+        <!-- Background Image -->
+        <div class="absolute inset-0">
+            <img src="{{ images.hero }}" alt="{{ business.name }}" class="w-full h-full object-cover">
+            <div class="hero-gradient absolute inset-0"></div>
+        </div>
+        
+        <!-- Content -->
+        <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 w-full">
+            <div class="max-w-3xl fade-in">
+                <!-- Tagline -->
+                <p class="text-accent font-medium tracking-widest uppercase text-sm mb-6">
+                    {{ business.serviceTypes | default("Custom Homes • Renovations • Lake Properties") }}
+                </p>
+                
+                <!-- Main Headline -->
+                <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-white leading-tight mb-6">
+                    {{ hero.headline | default("Building Dreams on the Water") }}
+                </h1>
+                
+                <!-- Subheadline -->
+                <p class="text-xl text-white/80 mb-10 max-w-xl leading-relaxed">
+                    {{ hero.description | default("Award-winning custom homes and renovations designed for lakefront living.") }}
+                </p>
+                
+                <!-- CTA Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#work" class="btn-primary inline-flex items-center justify-center bg-accent hover:bg-accent-hover text-white px-8 py-4 rounded font-semibold">
+                        View Our Work
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                    <a href="#contact" class="inline-flex items-center justify-center bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white border border-white/30 px-8 py-4 rounded font-semibold transition-colors">
+                        Start Your Project
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2">
+            <div class="w-px h-16 bg-gradient-to-b from-white/0 via-white/50 to-white/0"></div>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="bg-primary py-16">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="stat-number text-4xl lg:text-5xl font-bold text-white mb-2">{{ business.yearsInBusiness }}+</div>
+                    <div class="text-white/70 text-sm uppercase tracking-wider">Years Experience</div>
+                </div>
+                <div>
+                    <div class="stat-number text-4xl lg:text-5xl font-bold text-white mb-2">{{ stats.projectsCompleted | default("150") }}+</div>
+                    <div class="text-white/70 text-sm uppercase tracking-wider">Projects Completed</div>
+                </div>
+                <div>
+                    <div class="stat-number text-4xl lg:text-5xl font-bold text-white mb-2">{{ stats.lakefrontHomes | default("80") }}+</div>
+                    <div class="text-white/70 text-sm uppercase tracking-wider">Lakefront Homes</div>
+                </div>
+                <div>
+                    <div class="stat-number text-4xl lg:text-5xl font-bold text-white mb-2">100%</div>
+                    <div class="text-white/70 text-sm uppercase tracking-wider">Client Satisfaction</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Work / Portfolio -->
+    <section id="work" class="py-24 lg:py-32 bg-sand">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="max-w-2xl mb-16">
+                <p class="text-accent font-medium tracking-widest uppercase text-sm mb-4">Portfolio</p>
+                <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl text-primary mb-6">
+                    {{ portfolio.headline | default("Featured Projects") }}
+                </h2>
+                <p class="text-lg text-gray-600 leading-relaxed">
+                    {{ portfolio.description | default("Each project reflects our commitment to exceptional craftsmanship and our deep understanding of lakefront living.") }}
+                </p>
+            </div>
+            
+            <!-- Projects Grid -->
+            <div class="grid md:grid-cols-2 gap-6">
+                {% for project in portfolio.projects %}
+                <div class="project-card relative overflow-hidden rounded-lg cursor-pointer {% if loop.index == 1 %}md:col-span-2 aspect-[2/1]{% else %}aspect-[4/3]{% endif %}">
+                    <img src="{{ project.image }}" alt="{{ project.title }}" class="w-full h-full object-cover">
+                    <div class="project-overlay absolute inset-0 bg-primary/80 flex items-end p-8">
+                        <div>
+                            <p class="text-accent text-sm font-medium uppercase tracking-wider mb-2">{{ project.type }}</p>
+                            <h3 class="text-white text-2xl font-semibold mb-2">{{ project.title }}</h3>
+                            <p class="text-white/80">{{ project.location }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 lg:py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+                <!-- Image -->
+                <div class="relative">
+                    <img src="{{ images.about | default(images.hero) }}" alt="About {{ business.name }}" class="w-full rounded-lg">
+                    <!-- Accent element -->
+                    <div class="absolute -bottom-6 -left-6 w-48 h-48 bg-accent/10 rounded-lg -z-10 hidden lg:block"></div>
+                </div>
+                
+                <!-- Content -->
+                <div>
+                    <p class="text-accent font-medium tracking-widest uppercase text-sm mb-4">About Us</p>
+                    <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl text-primary mb-6 leading-tight">
+                        {{ about.headline | default("Crafting Exceptional Spaces Since " + (2025 - business.yearsInBusiness | int) | string) }}
+                    </h2>
+                    
+                    <div class="space-y-6 text-gray-600 leading-relaxed">
+                        <p class="text-lg">
+                            {{ about.description | default(business.name + " specializes in custom homes and renovations for discerning clients throughout the " + business.serviceArea + " region.") }}
+                        </p>
+                        
+                        <p>
+                            {{ about.story | default("We understand that lakefront properties present unique challenges and opportunities. Our team brings decades of specialized experience to every project, ensuring your home not only meets but exceeds expectations.") }}
+                        </p>
+                        
+                        <p>
+                            {{ about.commitment | default("From initial concept through final walkthrough, we're committed to transparent communication, meticulous attention to detail, and delivering results that stand the test of time.") }}
+                        </p>
+                    </div>
+                    
+                    {% if business.differentiator %}
+                    <div class="mt-8 pt-8 border-t border-gray-200">
+                        <p class="text-primary font-medium italic text-lg">"{{ business.differentiator }}"</p>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="mt-8">
+                        <a href="#contact" class="btn-primary inline-flex items-center bg-accent hover:bg-accent-hover text-white px-6 py-3 rounded font-semibold">
+                            Start a Conversation
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 lg:py-32 bg-stone">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <p class="text-accent font-medium tracking-widest uppercase text-sm mb-4">What We Do</p>
+                <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl text-primary mb-6">
+                    {{ services.headline | default("Our Services") }}
+                </h2>
+                <p class="text-lg text-gray-600">
+                    {{ services.subheadline | default("Comprehensive building services tailored to lakefront properties") }}
+                </p>
+            </div>
+            
+            <!-- Services Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for service in services.list %}
+                <div class="bg-white p-8 rounded-lg hover:shadow-lg transition-shadow duration-300">
+                    <!-- Icon -->
+                    <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            {% if loop.index == 1 %}
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                            {% elif loop.index == 2 %}
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                            {% elif loop.index == 3 %}
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
+                            {% elif loop.index == 4 %}
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                            {% elif loop.index == 5 %}
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                            {% else %}
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                            {% endif %}
+                        </svg>
+                    </div>
+                    
+                    <h3 class="text-xl font-semibold text-primary mb-3">{{ service.name }}</h3>
+                    <p class="text-gray-600 leading-relaxed">{{ service.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial Section - Single featured -->
+    <section id="testimonials" class="py-24 lg:py-32 bg-white">
+        <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+            <!-- Large quote mark -->
+            <div class="text-accent/20 text-9xl font-serif leading-none mb-8">"</div>
+            
+            {% if testimonials[0] %}
+            <blockquote class="font-display text-2xl sm:text-3xl lg:text-4xl text-primary leading-relaxed mb-8">
+                {{ testimonials[0].quote }}
+            </blockquote>
+            
+            <div class="flex items-center justify-center">
+                <div class="text-center">
+                    <div class="font-semibold text-primary text-lg">{{ testimonials[0].name }}</div>
+                    {% if testimonials[0].location %}
+                    <div class="text-gray-500">{{ testimonials[0].location }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Additional testimonials -->
+            {% if testimonials | length > 1 %}
+            <div class="mt-20 grid md:grid-cols-2 gap-8 text-left">
+                {% for testimonial in testimonials %}
+                {% if loop.index > 1 %}
+                <div class="bg-sand p-8 rounded-lg">
+                    <div class="flex text-accent mb-4">
+                        {% for i in range(5) %}
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                        </svg>
+                        {% endfor %}
+                    </div>
+                    <p class="text-gray-700 mb-4 leading-relaxed">"{{ testimonial.quote }}"</p>
+                    <div class="font-semibold text-primary">{{ testimonial.name }}</div>
+                    {% if testimonial.location %}
+                    <div class="text-gray-500 text-sm">{{ testimonial.location }}</div>
+                    {% endif %}
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="relative py-32 lg:py-40">
+        <!-- Background Image -->
+        <div class="absolute inset-0">
+            <img src="{{ images.cta | default(images.hero) }}" alt="Contact {{ business.name }}" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-primary/85"></div>
+        </div>
+        
+        <!-- Content -->
+        <div class="relative z-10 max-w-3xl mx-auto px-6 lg:px-8 text-center">
+            <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl text-white mb-6">
+                {{ cta.headline | default("Let's Build Something Extraordinary") }}
+            </h2>
+            <p class="text-xl text-white/80 mb-10 max-w-xl mx-auto">
+                {{ cta.description | default("Ready to start your project? We'd love to hear about your vision.") }}
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="tel:{{ business.phone | replace(' ', '') | replace('-', '') | replace('(', '') | replace(')', '') }}" class="btn-primary inline-flex items-center justify-center bg-accent hover:bg-accent-hover text-white px-8 py-4 rounded font-semibold text-lg">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                    </svg>
+                    {{ business.phone }}
+                </a>
+                <a href="#contact" class="inline-flex items-center justify-center bg-white text-primary px-8 py-4 rounded font-semibold text-lg hover:bg-gray-100 transition-colors">
+                    Schedule Consultation
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 lg:py-32 bg-sand">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 lg:gap-24">
+                <!-- Contact Info -->
+                <div>
+                    <p class="text-accent font-medium tracking-widest uppercase text-sm mb-4">Contact</p>
+                    <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl text-primary mb-6">
+                        Get In Touch
+                    </h2>
+                    <p class="text-lg text-gray-600 mb-10 leading-relaxed">
+                        {{ contact.description | default("We'd love to discuss your project. Reach out to schedule a consultation and let's explore the possibilities together.") }}
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <a href="tel:{{ business.phone | replace(' ', '') | replace('-', '') | replace('(', '') | replace(')', '') }}" class="flex items-center space-x-4 group">
+                            <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center group-hover:bg-accent/20 transition-colors">
+                                <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500 uppercase tracking-wider">Phone</div>
+                                <div class="text-primary font-medium group-hover:text-accent transition-colors">{{ business.phone }}</div>
+                            </div>
+                        </a>
+                        
+                        <a href="mailto:{{ business.email }}" class="flex items-center space-x-4 group">
+                            <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center group-hover:bg-accent/20 transition-colors">
+                                <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500 uppercase tracking-wider">Email</div>
+                                <div class="text-primary font-medium group-hover:text-accent transition-colors">{{ business.email }}</div>
+                            </div>
+                        </a>
+                        
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500 uppercase tracking-wider">Service Area</div>
+                                <div class="text-primary font-medium">{{ business.serviceArea }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Form -->
+                <div class="bg-white rounded-lg shadow-sm p-8 lg:p-10">
+                    <h3 class="text-2xl font-semibold text-primary mb-6">Start a Conversation</h3>
+                    <form action="{{ form.action | default('#') }}" method="POST" class="space-y-6">
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                                <input type="text" id="name" name="name" required class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-colors">
+                            </div>
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                                <input type="tel" id="phone" name="phone" required class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-colors">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-colors">
+                        </div>
+                        
+                        <div>
+                            <label for="project-type" class="block text-sm font-medium text-gray-700 mb-2">Project Type</label>
+                            <select id="project-type" name="project-type" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-colors">
+                                <option value="">Select a project type...</option>
+                                {% for service in services.list %}
+                                <option value="{{ service.name }}">{{ service.name }}</option>
+                                {% endfor %}
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Tell us about your project</label>
+                            <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition-colors resize-none" placeholder="Location, timeline, vision..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-accent hover:bg-accent-hover text-white py-4 rounded-lg font-semibold transition-colors btn-primary">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white py-16">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-10 mb-12">
+                <!-- Logo & Tagline -->
+                <div>
+                    {% if business.logo %}
+                    <img src="{{ business.logo }}" alt="{{ business.name }}" class="h-10 mb-4 brightness-0 invert">
+                    {% else %}
+                    <span class="text-xl font-semibold">{{ business.name }}</span>
+                    {% endif %}
+                    <p class="text-white/60 mt-4 leading-relaxed">
+                        {{ business.tagline }}
+                    </p>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-semibold mb-4 text-sm uppercase tracking-wider">Navigation</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#work" class="text-white/60 hover:text-white transition-colors">Work</a></li>
+                        <li><a href="#about" class="text-white/60 hover:text-white transition-colors">About</a></li>
+                        <li><a href="#services" class="text-white/60 hover:text-white transition-colors">Services</a></li>
+                        <li><a href="#contact" class="text-white/60 hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-semibold mb-4 text-sm uppercase tracking-wider">Contact</h4>
+                    <ul class="space-y-3 text-white/60">
+                        <li><a href="tel:{{ business.phone | replace(' ', '') | replace('-', '') | replace('(', '') | replace(')', '') }}" class="hover:text-white transition-colors">{{ business.phone }}</a></li>
+                        <li><a href="mailto:{{ business.email }}" class="hover:text-white transition-colors">{{ business.email }}</a></li>
+                        <li>{{ business.serviceArea }}</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Bottom -->
+            <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-sm text-white/50">
+                <p>&copy; {{ "now" | date("Y") }} {{ business.name }}. All rights reserved.</p>
+                {% if business.license %}
+                <p class="mt-2 md:mt-0">License #{{ business.license }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+        
+        // Close mobile menu on link click
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.add('hidden');
+            });
+        });
+        
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        const logoText = document.getElementById('logo-text');
+        const mobileBtn = document.getElementById('mobile-btn');
+        const navLinks = ['nav-link-1', 'nav-link-2', 'nav-link-3', 'nav-link-4'];
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('nav-scrolled');
+                if (logoText) logoText.classList.remove('text-white');
+                if (logoText) logoText.classList.add('text-primary');
+                if (mobileBtn) mobileBtn.classList.remove('text-white');
+                if (mobileBtn) mobileBtn.classList.add('text-primary');
+                navLinks.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        el.classList.remove('text-white/90', 'hover:text-white');
+                        el.classList.add('text-gray-600', 'hover:text-primary');
+                    }
+                });
+            } else {
+                navbar.classList.remove('nav-scrolled');
+                if (logoText) logoText.classList.add('text-white');
+                if (logoText) logoText.classList.remove('text-primary');
+                if (mobileBtn) mobileBtn.classList.add('text-white');
+                if (mobileBtn) mobileBtn.classList.remove('text-primary');
+                navLinks.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        el.classList.add('text-white/90', 'hover:text-white');
+                        el.classList.remove('text-gray-600', 'hover:text-primary');
+                    }
+                });
+            }
+        });
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

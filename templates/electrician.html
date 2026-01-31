@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ seo.title | default(business.name + ' | Professional Electrical Services') }}</title>
+    <meta name="description" content="{{ seo.description | default('Expert electrical services. Licensed, insured, experienced. Call for free quote!') }}">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        :root {
+            --primary: #1e40af;
+            --secondary: #f59e0b;
+            --dark: #1e293b;
+        }
+        
+        .hero-overlay {
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.95) 0%, rgba(30, 64, 175, 0.85) 100%);
+        }
+        
+        .btn-primary {
+            background: var(--secondary);
+            color: var(--dark);
+            font-weight: 600;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            display: inline-block;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+        }
+        
+        .service-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased">
+
+    <!-- Header/Navigation -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="text-2xl font-bold text-gray-900">
+                    {{ business.name }}
+                </div>
+                <div class="flex items-center space-x-6">
+                    <a href="tel:{{ business.phone }}" class="text-lg font-semibold text-blue-900 hover:text-blue-700">
+                        📞 {{ business.phone }}
+                    </a>
+                    <a href="#contact" class="btn-primary text-sm">
+                        Get a Quote
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative h-[600px] flex items-center">
+        <div class="absolute inset-0 z-0">
+            <img src="{{ images.hero }}" alt="{{ business.name }}" class="w-full h-full object-cover">
+            <div class="absolute inset-0 hero-overlay"></div>
+        </div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
+            <div class="max-w-3xl">
+                <h1 class="text-5xl md:text-6xl font-light mb-6 leading-tight">
+                    {{ hero.headline | default('Expert Electrical Services You Can Trust') }}
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 text-gray-100">
+                    {{ hero.subheadline | default('Serving your area with professional electrical solutions.') }}
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="tel:{{ business.phone }}" class="btn-primary text-center">
+                        {{ hero.cta_text | default('Get Free Quote') }}
+                    </a>
+                    <a href="#services" class="bg-white text-blue-900 font-semibold px-8 py-4 rounded-lg hover:bg-gray-100 transition text-center">
+                        Our Services
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Bar -->
+    <section class="bg-gray-50 py-8 border-y border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="text-4xl font-bold text-blue-900 mb-2">{{ business.years | default('10') }}+</div>
+                    <div class="text-gray-600 font-medium">Years Experience</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-blue-900 mb-2">✓</div>
+                    <div class="text-gray-600 font-medium">Licensed & Insured</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-blue-900 mb-2">⚡</div>
+                    <div class="text-gray-600 font-medium">Fast Response</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-blue-900 mb-2">★★★★★</div>
+                    <div class="text-gray-600 font-medium">Top Rated</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-4xl font-light text-gray-900 mb-6">
+                        {{ about.headline | default('Your Trusted Local Partner') }}
+                    </h2>
+                    <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                        {{ about.text | default('We\'ve been providing top-quality services to homeowners and businesses in the area. Our licensed and insured team brings expertise, professionalism, and attention to detail to every project.') }}
+                    </p>
+                    <p class="text-gray-600 leading-relaxed">
+                        Serving {{ business.serviceArea | default('the local area') }}, we're committed to delivering exceptional service with every job.
+                    </p>
+                </div>
+                <div class="relative">
+                    <img src="{{ images.about }}" alt="About {{ business.name }}" class="rounded-lg shadow-2xl h-80 w-full object-cover">
+                    <div class="absolute -bottom-6 -right-6 bg-yellow-400 text-gray-900 p-6 rounded-lg shadow-xl">
+                        <div class="text-3xl font-bold">{{ business.years | default('10') }}+</div>
+                        <div class="font-semibold">Years Serving<br>Our Community</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-light text-gray-900 mb-4">Our Services</h2>
+                <p class="text-xl text-gray-600">Professional solutions for all your needs</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for service in services %}
+                <div class="service-card bg-white rounded-xl p-8 shadow-lg">
+                    <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-4">{{ service.title }}</h3>
+                    <p class="text-gray-600 leading-relaxed mb-6">{{ service.description }}</p>
+                    <a href="#contact" class="text-blue-900 font-semibold hover:text-blue-700 inline-flex items-center">
+                        Learn More
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+                </div>
+                {% else %}
+                <div class="service-card bg-white rounded-xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-4">Quality Service</h3>
+                    <p class="text-gray-600 leading-relaxed">Professional solutions tailored to your needs.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-light text-gray-900 mb-4">{{ trust.headline | default('Why Customers Choose Us') }}</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                {% for point in trust.points %}
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">✓</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">{{ point }}</h3>
+                </div>
+                {% else %}
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">✓</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Licensed & Insured</h3>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">✓</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Experienced Professionals</h3>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">✓</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Fast Response Time</h3>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="relative py-24">
+        <div class="absolute inset-0 z-0 bg-blue-900"></div>
+        
+        <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+            <h2 class="text-4xl md:text-5xl font-light mb-6">{{ cta.headline | default('Ready to Get Started?') }}</h2>
+            <p class="text-xl mb-8 text-gray-100">{{ cta.text | default('Our expert team is ready to provide fast, reliable solutions. Call now for your free consultation and quote.') }}</p>
+            <a href="tel:{{ business.phone }}" class="btn-primary text-xl">
+                {{ cta.button_text | default('Call ' + business.phone) }}
+            </a>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section id="contact" class="py-20 bg-white">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-light text-gray-900 mb-4">Get a Free Quote</h2>
+                <p class="text-xl text-gray-600">Fill out the form and we'll get back to you within 24 hours</p>
+            </div>
+            
+            <form class="bg-gray-50 rounded-xl p-8 shadow-lg">
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Name</label>
+                        <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Your name">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Phone</label>
+                        <input type="tel" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="{{ business.phone }}">
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-medium mb-2">Email</label>
+                    <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="your@email.com">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-medium mb-2">Service Needed</label>
+                    <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option>Select a service</option>
+                        {% for service in services %}
+                        <option>{{ service.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-medium mb-2">Project Details</label>
+                    <textarea rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Tell us about your project..."></textarea>
+                </div>
+                <button type="submit" class="w-full btn-primary text-lg py-4">
+                    Send Request
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4">{{ business.name }}</h3>
+                    <p class="text-gray-400 mb-4">Professional service you can trust.</p>
+                    <p class="text-gray-400">Serving {{ business.serviceArea | default('the local area') }}</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact</h4>
+                    <p class="text-gray-400 mb-2">📞 {{ business.phone }}</p>
+                    <p class="text-gray-400 mb-2">✉️ {{ business.email }}</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Services</h4>
+                    <ul class="text-gray-400 space-y-2">
+                        {% for service in services %}
+                        <li>{{ service.title }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-500">
+                <p>&copy; {{ year }} {{ business.name }}. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+{
+  "hero": {
+    "headline": "Expert Electrical Services You Can Trust",
+    "subheadline": "Serving the Twin Cities metro area with professional electrical solutions for over 15 years, from panel upgrades to complete rewiring.",
+    "cta_text": "Get Free Quote"
+  },
+  "about": {
+    "headline": "Your Trusted Local Electrical Partner",
+    "text": "Since 2009, we've been providing top-quality electrical services to homeowners and businesses across the Twin Cities. With 15 years of hands-on experience, our licensed and insured team brings expertise, professionalism, and attention to detail to every project. We treat your property like our own, ensuring every job meets the highest safety standards while delivering reliable, long-lasting results."
+  },
+  "services": [
+    {
+      "title": "Residential Electrical",
+      "description": "From simple outlet installations to whole-home rewiring, we handle all your residential electrical needs. Our experienced electricians ensure your home's electrical system is safe, efficient, and up to code. We offer free estimates and guarantee all our work."
+    },
+    {
+      "title": "Panel Upgrades",
+      "description": "Older electrical panels can't handle modern power demands. We specialize in upgrading outdated panels to meet current electrical codes and safely power your home's increasing electrical needs. Protect your investment and ensure your family's safety with a modern electrical panel."
+    },
+    {
+      "title": "Commercial Electrical",
+      "description": "Keep your business running smoothly with our commercial electrical services. We handle everything from routine maintenance and repairs to complete electrical system installations for new construction. Minimize downtime and maximize safety with our expert commercial solutions."
+    },
+    {
+      "title": "Emergency Service",
+      "description": "Electrical emergencies don't wait for business hours. Our 24/7 emergency service ensures you're never left in the dark. We respond quickly to power outages, electrical hazards, and urgent repairs, providing immediate solutions to keep you safe."
+    },
+    {
+      "title": "Lighting Solutions",
+      "description": "Transform your space with professional lighting installation. Whether you're looking for energy-efficient LED upgrades, landscape lighting, or custom indoor lighting design, we'll create the perfect ambiance while reducing your energy costs."
+    }
+  ],
+  "trust": {
+    "headline": "Why Homeowners Choose Us",
+    "points": [
+      "Licensed, Bonded & Fully Insured for Your Protection",
+      "15+ Years of Proven Excellence in Electrical Work",
+      "Same-Day Service Available for Urgent Needs"
+    ]
+  },
+  "cta": {
+    "headline": "Ready to Solve Your Electrical Needs?",
+    "text": "Don't let electrical problems compromise your safety or comfort. Our expert team is ready to provide fast, reliable solutions. Call now for your free consultation and quote.",
+    "button_text": "Call (555) 123-4567"
+  },
+  "seo": {
+    "title": "Twin Cities Electrician | 15 Years Experience | Licensed & Insured",
+    "description": "Expert electrical services in Twin Cities metro. Residential & commercial. Licensed, insured, 15+ years experience. Same-day service available. Call for free quote!"
+  },
+  "business": {
+    "name": "Twin Cities Electric",
+    "phone": "(555) 123-4567",
+    "email": "info@twincitieselectric.com",
+    "serviceArea": "Twin Cities metro area",
+    "years": "15",
+    "industry": "electrician"
+  },
+  "template": "professional",
+  "generatedAt": "2026-01-29T12:00:00.000Z"
+}
