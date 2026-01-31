@@ -23,7 +23,7 @@ router.post('/create-checkout', async (req, res) => {
             metadata: {
                 slug: slug,
                 templateId: templateId || 'starter',
-                intakeData: JSON.stringify(intakeData).substring(0, 500)
+                intakeData: JSON.stringify(intakeData || {}).substring(0, 500)
             },
             success_url: `${process.env.CLIENT_URL || 'http://localhost:3000'}/success.html?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${process.env.CLIENT_URL || 'http://localhost:3000'}/building.html?canceled=true`
