@@ -32,8 +32,16 @@ app.use(express.static('public'));
 
 // Request logging
 app.use((req, res, next) => {
-    console.log(`${new Date().toISOString()} ${req.method}     console.log(`${newt(    console.log(`${newk
-app.get('/api/health', (req, res) app.get('/api/health', (req, res) s:app.get('/api/health', (req,ewapp.get('/api/health', (req    versapp.get('/ap
+    console.log(`${new Date().toISOString()} ${req.method} ${req.path}`);
+    next();
+});
+
+// Health check
+app.get('/api/health', (req, res) => {
+    res.json({ 
+        status: 'ok', 
+        timestamp: new Date().toISOString(),
+        version: '1.0.0'
     });
 });
 
@@ -43,15 +51,24 @@ app.use('/api', generateRoutes);
 app.use('/api', deployRoutes);
 app.use('/api', checkoutRoutes);
 
-// 40// 40// 40// 40// 40// 40// 40// 40// 40// 40/us(// 40// 40// 40// 40// 40// 40// 40// 40// 40// 4han// 40// 40// 40// 4req, res, next) => {
+// 404 handler
+app.use((req, res) => {
+    res.status(404).json({ error: 'Not found' });
+});
+
+// Error handler
+app.use((err, req, res, next) => {
     console.error('Server error:', err);
     res.status(500).json({ 
-                                     ',
-                                      =                    rr.message : undefined
+        error: 'Internal server error',
+        message: process.env.NODE_ENV === 'development' ? err.message : undefined
     });
 });
 
 // Start server
 app.listen(PORT, () => {
     console.log(`WebSimple API running on port ${PORT}`);
-    console.log(`Env    console.log(`Env    console.log(`Eev    console.log(`Enmodule.exports = app;
+    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+});
+
+module.exports = app;
